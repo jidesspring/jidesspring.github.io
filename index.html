@@ -232,7 +232,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/03/03/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/03/04/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Duke Cat">
@@ -251,7 +251,126 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/06/03/03/" itemprop="url">图形平移，旋转，缩放变换</a></h1>
+                <a class="post-title-link" href="/2019/06/03/04/" itemprop="url">着色器</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-03T15:46:31+08:00">
+                2019-06-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/03/3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Duke Cat">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/user.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一只嘟嘟嘟的小嘟嘟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/03/3/" itemprop="url">图形平移，旋转，缩放变换</a></h1>
         
 
         <div class="post-meta">
@@ -307,9 +426,37 @@
 <p>图形的旋转，平移，缩放其实都是对图形的坐标进行相应的矩阵运算得到的。首先要了解矩阵的基础运算知识：<br>1.矩阵的加法，和减法，都是对应位置的数相加减<br>2.矩阵的乘法：矩阵A乘以矩阵B要求矩阵A的列数等于矩阵B的行数，然后每行的元素和每列的元素依次相乘的和产生新矩阵的每个元素<br>3.矩阵的除法：其实就是乘以被除矩阵的逆矩阵。 根据公式：矩阵*乘以它的逆矩阵等于单位矩阵，可以算出逆矩阵</p>
 </blockquote>
 <h3 id="1-平移变换矩阵"><a href="#1-平移变换矩阵" class="headerlink" title="1.平移变换矩阵"></a>1.平移变换矩阵</h3><blockquote>
-<p>平移变换矩阵：单位矩阵变形后得到<br></p>
+<p>平移变换矩阵：</p>
 </blockquote>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"> </span><br></pre></td></tr></table></figure>
+<img src="/2019/06/03/3/01.png" title="右手坐标系"> 
+<img src="/2019/06/03/3/02.png" title="左手坐标系"> 
+<h3 id="2-旋转变换矩阵"><a href="#2-旋转变换矩阵" class="headerlink" title="2.旋转变换矩阵"></a>2.旋转变换矩阵</h3><blockquote>
+<p>右手坐标系旋转变换矩阵：</p>
+</blockquote>
+<img src="/2019/06/03/3/03.png" title="x 轴"> 
+<img src="/2019/06/03/3/04.png" title="y 轴"> 
+<img src="/2019/06/03/3/05.png" title="z 轴"> 
+<blockquote>
+<p>左手坐标系旋转变换矩阵：<br><img src="/2019/06/03/3/06.png" title="x 轴"><br><img src="/2019/06/03/3/07.png" title="y 轴"><br><img src="/2019/06/03/3/08.png" title="z 轴"> </p>
+</blockquote>
+<blockquote>
+<p>任意轴旋转矩阵：<br><img src="/2019/06/03/3/09.png" title="x 轴"> </p>
+</blockquote>
+<h3 id="3-缩放变换矩阵"><a href="#3-缩放变换矩阵" class="headerlink" title="3.缩放变换矩阵"></a>3.缩放变换矩阵</h3><blockquote>
+<p>缩放变换矩阵：</p>
+</blockquote>
+<img src="/2019/06/03/3/10.png" title="缩放"> 
+<h3 id="4-错切变换"><a href="#4-错切变换" class="headerlink" title="4.错切变换"></a>4.错切变换</h3><blockquote>
+<p>错切变换形式有6种：Hxy(s)、Hxz(s)、Hyx(s)、Hyz(s)、Hzx(s)、Hzy(s).第一个下标表示由错切矩阵改变的坐标，第二个下标表示进行错切操作的坐标。</p>
+</blockquote>
+<img src="/2019/06/03/3/11.png" title="错切变换矩阵"> 
+<img src="/2019/06/03/3/12.png" title="错切变换示意图"> 
+<h3 id="5-镜像变换矩阵（法线变换）"><a href="#5-镜像变换矩阵（法线变换）" class="headerlink" title="5.镜像变换矩阵（法线变换）"></a>5.镜像变换矩阵（法线变换）</h3><blockquote>
+<p>通过逆矩阵的转置矩阵进行变换</p>
+</blockquote>
+<img src="/2019/06/03/3/13.png" title="错切变换矩阵"> 
+<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">实际应用中，如果变换矩阵是正交的（如旋转矩阵），就没必要计算它的逆矩阵，因为正交矩阵的逆矩阵就是转置矩阵，两个转置矩阵相互抵消，相乘的结果还是原来的旋转矩阵。</span><br><span class="line">此外，还有平移矩阵，由于平移不改变向量的方向，所以可以进行任意次数的平移而不对法线产生任何影响。</span><br><span class="line">另外，如果使用一个或多个一致性缩放矩阵进行变换，也不需要计算相应的逆矩阵，因为这种缩放只改变法线长度，不影响其方向。</span><br><span class="line">这种矩阵进行变换之后需要对法线进行归一化（规范化）</span><br></pre></td></tr></table></figure>
+</code></pre><p> 参考资料： 图形变换之基本矩阵变换 <a href="https://www.cnblogs.com/ll-10/p/5470637.html/" target="_blank" rel="noopener">https://www.cnblogs.com/ll-10/p/5470637.html/</a></p>
 
           
         
@@ -733,7 +880,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

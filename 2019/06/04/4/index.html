@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="着色器程序 着色器程序类似于c语言写的程序，需要编译，链接，执行。区别在于它是由GPU执行的程序。  opengles 的图形渲染的可编程阶段就是着色器程序执行的阶段。   着色器对象编译后连接到一个程序对象，程序对象可以连接多个着色器最想。每个程序对像需要链接一个顶点着色器和一个片段着色器。  1.创建一个着色器对象和一个片段着色器对象  2.将源代码链接到每个着色器对象  3.编译着色器对象">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenGLES 编程基础 （一）">
+<meta property="og:url" content="http://yoursite.com/2019/06/04/4/index.html">
+<meta property="og:site_name" content="一只嘟嘟嘟的小嘟嘟">
+<meta property="og:description" content="着色器程序 着色器程序类似于c语言写的程序，需要编译，链接，执行。区别在于它是由GPU执行的程序。  opengles 的图形渲染的可编程阶段就是着色器程序执行的阶段。   着色器对象编译后连接到一个程序对象，程序对象可以连接多个着色器最想。每个程序对像需要链接一个顶点着色器和一个片段着色器。  1.创建一个着色器对象和一个片段着色器对象  2.将源代码链接到每个着色器对象  3.编译着色器对象">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2019/06/04/4/01.png">
+<meta property="og:updated_time" content="2019-06-05T07:12:02.916Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OpenGLES 编程基础 （一）">
+<meta name="twitter:description" content="着色器程序 着色器程序类似于c语言写的程序，需要编译，链接，执行。区别在于它是由GPU执行的程序。  opengles 的图形渲染的可编程阶段就是着色器程序执行的阶段。   着色器对象编译后连接到一个程序对象，程序对象可以连接多个着色器最想。每个程序对像需要链接一个顶点着色器和一个片段着色器。  1.创建一个着色器对象和一个片段着色器对象  2.将源代码链接到每个着色器对象  3.编译着色器对象">
+<meta name="twitter:image" content="http://yoursite.com/2019/06/04/4/01.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/06/04/4/">
+
+
+
+
+
+  <title>OpenGLES 编程基础 （一） | 一只嘟嘟嘟的小嘟嘟</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一只嘟嘟嘟的小嘟嘟</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">one more thing ! 接下来做什么</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/04/4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Duke Cat">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/user.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一只嘟嘟嘟的小嘟嘟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">OpenGLES 编程基础 （一）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-04T15:46:31+08:00">
+                2019-06-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="着色器程序"><a href="#着色器程序" class="headerlink" title="着色器程序"></a>着色器程序</h3><blockquote>
+<p>着色器程序类似于c语言写的程序，需要编译，链接，执行。区别在于它是由GPU执行的程序。<br>  opengles 的图形渲染的可编程阶段就是着色器程序执行的阶段。</p>
+</blockquote>
+<blockquote>
+<p>着色器对象编译后连接到一个程序对象，程序对象可以连接多个着色器最想。每个程序对像需要链接一个顶点着色器和一个片段着色器。<br>  1.创建一个着色器对象和一个片段着色器对象<br>  2.将源代码链接到每个着色器对象<br>  3.编译着色器对象<br>  4.创建一个程序对象<br>  5.将编译后的着色器对象链接到程序对象<br>  6.连接程序对象</p>
+</blockquote>
+<blockquote>
+<p>创建着色器对象：</p>
+</blockquote>
+ <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glCreateShader(GLenum type) <span class="comment">//创建着色器</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>删除着色器对象：</p>
+</blockquote>
+ <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glCreateShader(GLenum type) <span class="comment">//创建着色器</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>提供着色器源代码：</p>
+</blockquote>
+ <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glShaderSource(&lt;<span class="meta">#GLuint shader#&gt;, <span class="meta-string">&lt;#GLsizei count#&gt;</span>, const GLchar *const *string, <span class="meta-string">&lt;#const GLint *length#&gt;</span>)</span></span><br><span class="line"><span class="comment">//加载着色器源代码</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>编译着色器代码：</p>
+</blockquote>
+ <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glCompileShader(GLuint shader)<span class="comment">//编译着色器代码</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>查询着色器信息：</p>
+</blockquote>
+ <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glGetShaderiv(GLuint shader, GLenum pname, GLint *params) <span class="comment">//查询着色器信息，看看有没有错误</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>创建程序对象：</p>
+</blockquote>
+ <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glCreateProgram() <span class="comment">//创建程序对象</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>链接程序：着色器程序可以在任何时候进行连接，甚至都不一定要进行编译，没有源代码也可以。但是必须要有顶点着色器对象和片段着色器对象与之连接</p>
+</blockquote>
+ <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glAttachShader(GLuint program, GLuint shader) <span class="comment">//链接着色器程序</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>断开链接：</p>
+</blockquote>
+ <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glDetachShader(GLuint program, GLuint shader) <span class="comment">//断开链接程序</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>删除程序对象：</p>
+</blockquote>
+ <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glGetShaderiv(GLuint shader, GLenum pname, GLint *params) <span class="comment">//查询着色器信息，看看有没有错误</span></span><br></pre></td></tr></table></figure>
+<img src="/2019/06/04/4/01.png" title="opengles渲染流程"> 
+<h4 id="顶点着色器"><a href="#顶点着色器" class="headerlink" title="顶点着色器"></a>顶点着色器</h4><blockquote>
+<ol>
+<li>矩阵变换：平移，缩放，扭曲，旋转等等</li>
+<li>照明，反射，漫反射光线</li>
+<li>生成纹理坐标</li>
+<li>顶点蒙皮，平滑多边形之间的连接点</li>
+</ol>
+</blockquote>
+<h4 id="片段着色器"><a href="#片段着色器" class="headerlink" title="片段着色器"></a>片段着色器</h4><blockquote>
+<ol>
+<li>多重纹理</li>
+<li>雾化</li>
+<li>透明度</li>
+<li>剪裁</li>
+</ol>
+</blockquote>
+<h3 id="顶点属性，顶点数组，和顶点缓冲区对象"><a href="#顶点属性，顶点数组，和顶点缓冲区对象" class="headerlink" title="顶点属性，顶点数组，和顶点缓冲区对象"></a>顶点属性，顶点数组，和顶点缓冲区对象</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">思考🤔：什么是帧缓冲区，渲染缓冲区，顶点缓冲 。颜色缓冲区属于哪种缓冲？</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p> 渲染到纹理有两种实现方式：</p>
+<ol>
+<li>通过复制缓冲区到纹理 glCopyTexImage2D,glCopyTexSubImage2等来实现，但是只适用于纹理尺寸较小或者等于纹理缓冲区尺寸的时候才有效，而且对性能也会产生影响</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="2">
+<li>通过使用连接到纹理的pbuffer来实现渲染到纹理，pbuffer需要和一个上下文对应，在窗口系统提供的可绘制表面进行切换的时候会清楚之前渲染的图像，这样会造成cpu闲置，因为切换上下文的开销太大。</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>作为替代需要允许直接渲染到纹理或者具备创建屏幕外表面的能力，并将它作为渲染目标，而帧缓冲和渲染缓冲区对象提供了这个功能但不需要切换上下文。</p>
+</blockquote>
+<blockquote>
+<p>顶点属性</p>
+</blockquote>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">opengles的基础数据就是顶点数据，包括坐标，颜色，索引，纹理坐标等等，顶点属性就是描述这些信息的统称。通过顶点数据绘制出基本图形：点，线段，三角形。只有这些基本的图形才组成了立体的实物的图像渲染。因为你想啊一个物体得有多少个基本图形啊，肯定会非常多是不是，这些数据又包含坐标，索引，颜色，纹理什么的，如果不使用缓存开销肯定会很大，所以顶点数组，顶点缓冲区对象就提供了缓存的能力</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>常量顶点属性</p>
+</blockquote>
+  <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glVertexAttrib1f(GLuint indx, GLfloat x)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>顶点数组</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glVertexAttribPointer(GLuint indx, GLint size, GLenum type, GLboolean normalized, GLsizei stride, <span class="keyword">const</span> GLvoid *ptr)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>常量顶点属性和顶点数组切换</p>
+</blockquote>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glEnableVertexAttribArray(GLuint index)</span><br><span class="line">glDisableVertexAttribArray(GLuint index)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<blockquote>
+<p>数组结构：在单独的缓存区保存每个属性，一个缓存区一个顶点属性</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>结构数组：只用一个缓存区保存所有顶点属性，数组里每个元素都是一个包含这个顶点的所有属性的数组</p>
+</blockquote>
+</blockquote>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">大多数情况下结构数组 更高效，因为顶点属性是保存在一个数组里的，也即是顺序存储，读取效率更快。但是缺点是，在修改顶点属性的时候，会造成顶点缓冲区的跨距更新。当顶点缓冲区以缓冲区对象的形式提供时需要重新加载整个缓冲区。可以将需要修改的特点属性单独保存到缓冲区来避免</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>顶点缓冲区对象</p>
+</blockquote>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">glGenBuffers(GLsizei n, GLuint *buffers)<span class="comment">//创建缓存区对象</span></span><br><span class="line">glBindBuffer(GLenum target, GLuint buffer) <span class="comment">//绑定缓存区对象</span></span><br><span class="line">glBufferData(GLenum target, GLsizeiptr size, <span class="keyword">const</span> GLvoid *data, GLenum usage)<span class="comment">//顶点数组或者元素数组的存储初始化</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>。加载顶点属性的两种方式：顶点数组和顶点缓冲区对象</span><br><span class="line"><span class="number">2.</span> 顶点缓冲区对象优于顶点数组，因为它减少了cpu和gpu之间复制的数据量，从而获得更好的性能。顶点数组缓冲区对象包含顶点数组</span><br></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">总结：opengles因为性能的考虑基本上帧缓冲和渲染缓冲都是必须会用到的，除此之外还有顶点缓冲区对象也是会用到的</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/04/5/" rel="next" title="OpenGLES 编程基础 (二)">
+                <i class="fa fa-chevron-left"></i> OpenGLES 编程基础 (二)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/04/04/" rel="prev" title="未完待续。。。。">
+                未完待续。。。。 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/user.png" alt="Duke Cat">
+            
+              <p class="site-author-name" itemprop="name">Duke Cat</p>
+              <p class="site-description motion-element" itemprop="description">关注最新动态！分享成果！</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jidesspring" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://music.163.com/#/user/home?id=65620998" target="_blank" title="Music">
+                      
+                        <i class="fa fa-fw fa-music"></i>Music</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#着色器程序"><span class="nav-number">1.</span> <span class="nav-text">着色器程序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#顶点着色器"><span class="nav-number">1.1.</span> <span class="nav-text">顶点着色器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#片段着色器"><span class="nav-number">1.2.</span> <span class="nav-text">片段着色器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#顶点属性，顶点数组，和顶点缓冲区对象"><span class="nav-number">2.</span> <span class="nav-text">顶点属性，顶点数组，和顶点缓冲区对象</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-avatar"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Duke Cat</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
